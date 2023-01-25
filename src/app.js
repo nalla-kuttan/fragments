@@ -6,7 +6,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 
 // version and author from our package.json file
-const { version, author } = require('../package.json');
+//const { version, author } = require('../package.json');
 
 const logger = require('./logger');
 const pino = require('pino-http')({
@@ -44,8 +44,6 @@ app.use(cors());
 
 // Use gzip/deflate compression middleware
 app.use(compression());
-
-
 
 // Define our routes
 app.use('/', require('./routes'));
