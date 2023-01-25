@@ -27,15 +27,7 @@ router.get('/', (req, res) => {
     githubUrl: 'https://github.com/nalla-kuttan/fragments',
     version,
   });
+  
 });
-
-// Our authentication middleware
-const { authenticate } = require('../authentication');
-
-/**
- * Expose all of our API routes on /v1/* to include an API version.
- * Protect them all so you have to be authenticated in order to access.
- */
-router.use(`/v1`, authenticate(), require('./api'));
 
 module.exports = router;

@@ -19,16 +19,11 @@ const app = express();
 
 // modifications to src/app.js
 
-const passport = require('passport');
 
-const authenticate = require('./authentication');
+
 
 // Use gzip/deflate compression middleware
 app.use(compression());
-
-// Set up our passport authentication middleware
-passport.use(authenticate.strategy());
-app.use(passport.initialize());
 
 // Define our routes
 app.use('/', require('./routes'));
