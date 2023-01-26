@@ -3,10 +3,17 @@
 /**
  * Get a list of fragments for the current user
  */
+
+
 module.exports = (req, res) => {
-    // TODO: this is just a placeholder to get something working...
+  if (req.headers.authorization) {
     res.status(200).json({
       status: 'ok',
       fragments: [],
     });
+  }
+   else if (!req.headers.authorization) {
+      res.status(401).send('Unauthorized');
+      return;
+  }  
   };

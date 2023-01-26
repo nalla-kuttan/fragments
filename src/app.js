@@ -6,7 +6,8 @@ const helmet = require('helmet');
 const compression = require('compression');
 
 // version and author from our package.json file
-//const { version, author } = require('../package.json');
+// eslint-disable-next-line no-unused-vars
+const { version, author } = require('../package.json');
 
 const logger = require('./logger');
 const pino = require('pino-http')({
@@ -14,19 +15,11 @@ const pino = require('pino-http')({
   logger,
 });
 
+const passport = require('passport');
+const authorization = require('./authorization');
+
 // Create an express app instance we can use to attach middleware and HTTP routes
 const app = express();
-
-// modifications to src/app.js
-
-
-
-
-// Use gzip/deflate compression middleware
-app.use(compression());
-
-// Define our routes
-app.use('/', require('./routes'));
 
 // Use logging middleware
 app.use(pino);
@@ -40,8 +33,16 @@ app.use(cors());
 // Use gzip/deflate compression middleware
 app.use(compression());
 
+// Use gzip/deflate compression middleware
+app.use(compression());
+
+// Set up our passport authorization middleware
+passport.use(authorization.strategy());
+app.use(passport.initialize());
+
 // Define our routes
 app.use('/', require('./routes'));
+
 
 // Add 404 middleware to handle any requests for resources that can't be found
 app.use((req, res) => {
