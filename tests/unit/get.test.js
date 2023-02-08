@@ -18,6 +18,27 @@ describe('GET /v1/fragments', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.status).toBe('ok');
     expect(Array.isArray(res.body.fragments)).toBe(true);
+    
+  });
+
+  test('returns 404 for unauthenticated users', async () => {
+    const res = await request(app)
+      .post('/fragments')
+      .set('Content-Type', 'text/plain')
+      .send('hello, world!');
+
+    expect(res.statusCode).toBe(404);
+  });
+
+  test('returns 404 for unsupported Content-Type', async () => {
+    const res = await request(app)
+      .post('/fragments')
+      .auth('user1@email.com', 'password1')
+      .set('Content-Type', 'application/octet-stream')
+      .send(Buffer.from([0x01, 0x02, 0x03]));
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body).toHaveProperty('error.message', 'not found');
   });
 
   // TODO: we'll need to add tests to check the contents of the fragments array later

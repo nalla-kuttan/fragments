@@ -16,6 +16,7 @@ const {
 
 class Fragment {
   constructor({ id = rid, ownerId, created, updated, type, size = 0 }) {
+    
     if (!ownerId || !type) throw 'Missing Arguments on Fragment constructor';
 
     if (isNaN(size) || size < 0 || typeof size != 'number') throw 'Size is not a Number';
@@ -31,6 +32,8 @@ class Fragment {
     this.type = type;
     this.size = size;
   }
+
+
 
   /**
    * Get all fragments (id or full) for the given user
