@@ -9,7 +9,7 @@ const {
     const fauxfrag1 = { ownerId: 'f1', id: '1', fragment: 'This is the F1 metadata' };
     const fauxfrag2 = { ownerId: 'f1', id: '2', fragment: 'This is the F2 metadata' };
     test('Write data and metadata to the In-Memory DB', async () => {
-      // Create 3 pretend fragments, and put some data in each
+      // Create 3 fake fragments, and put some data in each
       // fragment1 metadata and data
       await writeFragment(fauxfrag1);
       await writeFragmentData('f1', '1', 'This is fragment 1');

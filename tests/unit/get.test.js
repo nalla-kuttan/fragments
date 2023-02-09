@@ -40,6 +40,4 @@ describe('GET /v1/fragments', () => {
     expect(res.statusCode).toBe(404);
     expect(res.body).toHaveProperty('error.message', 'not found');
   });
-
-  // TODO: we'll need to add tests to check the contents of the fragments array later
 });

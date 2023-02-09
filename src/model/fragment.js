@@ -61,7 +61,6 @@ class Fragment {
    */
   static async byUser(ownerId, expand = false) {
     //returns an empty array if there are no fragments for this user, passes only ownerId
-    // TODO
     return await listFragments(ownerId, expand);
   }
 
@@ -72,7 +71,6 @@ class Fragment {
    * @returns Promise<Fragment>
    */
   static async byId(ownerId, id) {
-    // TODO
     const fragment = await readFragment(ownerId, id);
     if (!fragment) {
       throw new Error(`Size must be number and cannot be a negative number`);
@@ -87,7 +85,6 @@ class Fragment {
    * @returns Promise
    */
   static delete(ownerId, id) {
-    // TODO
     return deleteFragment(ownerId, id);
   }
 
@@ -96,7 +93,6 @@ class Fragment {
    * @returns Promise
    */
   save() {
-    // TODO
     this.updated = new Date().toISOString();
     return writeFragment(this);
   }
@@ -106,7 +102,6 @@ class Fragment {
    * @returns Promise<Buffer>
    */
   getData() {
-    // TODO
     return readFragmentData(this.ownerId, this.id);
   }
 
@@ -116,7 +111,6 @@ class Fragment {
    * @returns Promise
    */
   async setData(data) {
-    // TODO
     if (!data) {
       throw new Error(`Buffer is required`);
     }
@@ -140,7 +134,6 @@ class Fragment {
    * @returns {boolean} true if fragment's type is text/*
    */
   get isText() {
-    // TODO
     const type = this.mimeType;
     var flag;
     if (type.startsWith('text/')) {
@@ -156,7 +149,6 @@ class Fragment {
    * @returns {Array<string>} list of supported mime types
    */
   get formats() {
-    // TODO
     const formats = ['text/plain'];
     return formats;
   }
@@ -167,7 +159,6 @@ class Fragment {
    * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
    */
   static isSupportedType(value) {
-    // TODO
     var supported;
     if (value === 'text/plain' || value === 'text/plain; charset=utf-8') {
       supported = true;
