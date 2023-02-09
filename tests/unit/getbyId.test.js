@@ -1,9 +1,8 @@
-// tests/unit/getById.test.js
+// tests/unit/getbyId.test.js
 
 const request = require('supertest');
 
 const app = require('../../src/app');
-//const logger = require('../../src/logger');
 const { Fragment } = require('../../src/model/fragment');
 const hash = require('crypto');
 
