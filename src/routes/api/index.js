@@ -30,7 +30,7 @@ router.get('/fragments', require('./get'));
 
 router.post('/fragments', rawBody(), require('./post'));
 
-router.get('/fragments/:id', require('./getById'));
+router.get('/fragments/:id', require('./getbyId'));
 
 // Other routes will go here later on...
 
