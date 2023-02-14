@@ -2,3 +2,5 @@ node_modules/
 # Don't include .env, which might have sensitive information
 .env
 coverage/
+fragments-0.0.1.tgz
+ccp555-key-pair.pem
