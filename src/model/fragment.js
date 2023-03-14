@@ -1,5 +1,8 @@
 const { randomUUID } = require('crypto');
-const rid = randomUUID();
+//const randomID = randomUUID(); // '30a84843-0cd4-4975-95ba-b96112aea189'
+// Use https://www.npmjs.com/package/nanoid to create unique IDs
+//const { nanoid } = require('nanoid');
+
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
 
@@ -22,8 +25,7 @@ class Fragment {
     }
 
     if (!id) {
-      //const rid = randomUUID();
-      this.id = rid;
+      this.id = randomUUID();
     } else {
       this.id = id;
     }
@@ -157,7 +159,19 @@ class Fragment {
    */
   get formats() {
     // TODO
-    const formats = ['text/plain'];
+    var formats;
+    if (this.mimeType == 'text/plain') {
+      formats = ['text/plain'];
+    }
+    if (this.mimeType == 'text/markdown') {
+      formats = ['text/markdown', 'text/html', 'text/plain'];
+    }
+    if (this.mimeType == 'text/html') {
+      formats = ['text/html', 'text/plain'];
+    }
+    if (this.mimeType == 'application/json') {
+      formats = ['application/json', 'text/plain'];
+    }
     return formats;
   }
 
@@ -169,7 +183,13 @@ class Fragment {
   static isSupportedType(value) {
     // TODO
     var supported;
-    if (value.startsWith('text/') || value === 'application/json') {
+    if (
+      value === 'text/plain' ||
+      value === 'text/plain; charset=utf-8' ||
+      value === 'text/markdown' ||
+      value === 'text/html' ||
+      value === 'application/json'
+    ) {
       supported = true;
     } else {
       supported = false;

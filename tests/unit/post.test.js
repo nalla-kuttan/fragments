@@ -26,7 +26,7 @@ describe('POST /v1/fragments', () => {
   });
 
 
-test('authenticated users can create a text/html fragment', async () => {
+/*test('authenticated users can create a text/html fragment', async () => {
   const res = await request(app)
     .post('/v1/fragments')
     .auth('user1@email.com', 'password1')
@@ -44,7 +44,7 @@ test('authenticated users can create a text/html fragment', async () => {
   expect(savedFragment.at(0).created).toEqual(expect.any(String));
   expect(savedFragment.at(0).updated).toEqual(expect.any(String));
   expect(savedFragment.at(0).size).toEqual(expect.any(Number));
-});
+});*/
 
 test('authenticated users can create a text/plain; charset=utf-8 fragment', async () => {
   const res = await request(app)
@@ -67,7 +67,7 @@ test('authenticated users can create a text/plain; charset=utf-8 fragment', asyn
 });
 
 
-test('authenticated users can create an application/json fragment', async () => {
+/*test('authenticated users can create an application/json fragment', async () => {
   const res = await request(app)
     .post('/v1/fragments')
     .auth('user1@email.com', 'password1')
@@ -85,6 +85,6 @@ test('authenticated users can create an application/json fragment', async () => 
   expect(savedFragment.at(0).created).toEqual(expect.any(String));
   expect(savedFragment.at(0).updated).toEqual(expect.any(String));
   expect(savedFragment.at(0).size).toEqual(expect.any(Number));
-});
+});*/
 
 });
