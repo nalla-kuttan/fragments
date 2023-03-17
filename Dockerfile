@@ -25,7 +25,8 @@
  COPY package*.json ./
  # Install node dependencies defined in package-lock.json
  RUN npm install
-
+ FROM microsoft/powershell
+ RUN powershell -Command Install-Module -Name AWSPowerShell.NetCore -Force
 
  ##########################################################################################
  # Stage 1: start the service
