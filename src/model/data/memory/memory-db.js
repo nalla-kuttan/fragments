@@ -1,8 +1,8 @@
-const logger = require('../../../logger');
 const validateKey = (key) => typeof key === 'string';
 
 class MemoryDB {
   constructor() {
+    /** @type {Record<string, any>} */
     this.db = {};
   }
 
@@ -10,11 +10,9 @@ class MemoryDB {
    * Gets a value for the given primaryKey and secondaryKey
    * @param {string} primaryKey
    * @param {string} secondaryKey
-   * @returns Promise<any>
+   * @returns {Promise<any>}
    */
   get(primaryKey, secondaryKey) {
-    logger.info(`memory-db - GET - Primary Key: ${primaryKey}, and Secondary Key: ${secondaryKey}`);
-
     if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
       throw new Error(
         `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
@@ -30,12 +28,9 @@ class MemoryDB {
    * Puts a value into the given primaryKey and secondaryKey
    * @param {string} primaryKey
    * @param {string} secondaryKey
-   * @param value anything you would like to be stored
-   * @returns Promise
+   * @returns {Promise<void>}
    */
   put(primaryKey, secondaryKey, value) {
-    logger.info(`memory-db - PUT - Primary Key: ${primaryKey}, and Secondary Key: ${secondaryKey}`);
-
     if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
       throw new Error(
         `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
@@ -54,18 +49,16 @@ class MemoryDB {
    * Queries the list of values (i.e., secondaryKeys) for the given primaryKey.
    * Always returns an Array, even if no items are found.
    * @param {string} primaryKey
-   * @returns Promise<any[]>
+   * @returns {Promise<any[]>}
    */
   query(primaryKey) {
-    logger.info(`memory-db - QUERY - Primary Key: ${primaryKey}`);
-
     if (!validateKey(primaryKey)) {
       throw new Error(`primaryKey string is required, got primaryKey=${primaryKey}`);
     }
 
     // No matter what, we always return an array (even if empty)
     const db = this.db;
-    const values = (db[primaryKey] && Object.values(db[primaryKey])) || [];
+    const values = db[primaryKey] ? Object.values(db[primaryKey]) : [];
     return Promise.resolve([].concat(values));
   }
 
@@ -73,11 +66,9 @@ class MemoryDB {
    * Deletes the value with the given primaryKey and secondaryKey
    * @param {string} primaryKey
    * @param {string} secondaryKey
-   * @returns Promise<any[]>
+   * @returns {Promise<void>}
    */
   async del(primaryKey, secondaryKey) {
-    logger.info(`memory-db - DEL - Primary Key: ${primaryKey}, and Secondary Key: ${secondaryKey}`);
-
     if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
       throw new Error(
         `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
