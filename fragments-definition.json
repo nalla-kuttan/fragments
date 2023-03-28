@@ -28,7 +28,7 @@
       "environment": [
         {
           "name": "API_URL",
-          "value": "http://localhost:8080"
+          "value": "${{ secrets.API_URL }}"
         },
         {
           "name": "AWS_COGNITO_CLIENT_ID",
