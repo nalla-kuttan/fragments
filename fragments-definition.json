@@ -39,6 +39,10 @@
           "value": "${{ secrets.AWS_COGNITO_POOL_ID }}"
         },
         {
+          "name": "AWS_S3_BUCKET_NAME",
+          "value": "ruban.manoj-fragments"
+        },
+        {
           "name": "PORT",
             "value": "${{ secrets.PORT }}"
         }
