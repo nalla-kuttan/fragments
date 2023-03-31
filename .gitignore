@@ -5,3 +5,5 @@ coverage/
 fragments-0.0.1.tgz
 ccp555-key-pair.pem
 .DS_Store
+minio/
+docker-compose.local.yml
