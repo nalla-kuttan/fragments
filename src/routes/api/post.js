@@ -2,7 +2,7 @@
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 const { Fragment } = require('../../../src/model/fragment');
 const logger = require('../../logger');
-const apiURL = process.env.API_URL || process;
+const apiURL = process.env.API_URL;
 //Creates a new fragment for the current (i.e., authenticated user)
 module.exports = async (req, res) => {
   var supported = Fragment.isSupportedType(req.get('Content-Type'));
@@ -12,7 +12,7 @@ module.exports = async (req, res) => {
       const fragment = new Fragment({ ownerId: req.user, type: req.get('Content-Type') });
       logger.info('saving fragment data');
       await fragment.setData(req.body);
-      fragment.save();
+      await fragment.save();
       res.setHeader('Content-type', fragment.type);
       res.setHeader('Location', apiURL + '/v1/fragments/' + fragment.id);
       res.status(201).json(
