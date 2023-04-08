@@ -1,7 +1,4 @@
 const { randomUUID } = require('crypto');
-//const randomID = randomUUID(); // '30a84843-0cd4-4975-95ba-b96112aea189'
-// Use https://www.npmjs.com/package/nanoid to create unique IDs
-//const { nanoid } = require('nanoid');
 
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 const contentType = require('content-type');
