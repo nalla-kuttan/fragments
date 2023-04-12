@@ -157,17 +157,25 @@ class Fragment {
   get formats() {
     // TODO
     var formats;
-    if (this.mimeType == 'text/plain') {
+    if (this.mimeType === 'text/plain') {
       formats = ['text/plain'];
     }
-    if (this.mimeType == 'text/markdown') {
+    if (this.mimeType === 'text/markdown') {
       formats = ['text/markdown', 'text/html', 'text/plain'];
     }
-    if (this.mimeType == 'text/html') {
+    if (this.mimeType === 'text/html') {
       formats = ['text/html', 'text/plain'];
     }
-    if (this.mimeType == 'application/json') {
+    if (this.mimeType === 'application/json') {
       formats = ['application/json', 'text/plain'];
+    }
+    if (
+      this.mimeType === 'image/png' ||
+      this.mimeType === 'image/jpeg' ||
+      this.mimeType === 'image/gif' ||
+      this.mimeType === 'image/webp'
+    ) {
+      formats = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
     }
     return formats;
   }
@@ -185,8 +193,14 @@ class Fragment {
       value === 'text/plain; charset=utf-8' ||
       value === 'text/markdown' ||
       value === 'text/html' ||
-      value === 'application/json'
+      value === 'application/json' ||
+      value === 'image/jpeg' ||
+      value === 'image/webp' ||
+      value === 'image/png' ||
+      value === 'image/gif'
     ) {
+      supported = true;
+    } else if (value.startsWith('image/jpeg')) {
       supported = true;
     } else {
       supported = false;

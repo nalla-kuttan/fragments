@@ -36,6 +36,7 @@ router.get('/fragments/:id/info', require('./getInfoById'));
 
 router.delete('/fragments/:id', require('./delete'));
 
-// Other routes will go here later on...
+router.put('/fragments/:id', rawBody(), require('./put'));
+
 
 module.exports = router;

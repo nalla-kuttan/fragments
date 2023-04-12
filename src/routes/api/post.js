@@ -6,6 +6,8 @@ const apiURL = process.env.API_URL;
 //Creates a new fragment for the current (i.e., authenticated user)
 module.exports = async (req, res) => {
   var supported = Fragment.isSupportedType(req.get('Content-Type'));
+  console.log(req.get('Content-Type'));
+  console.log(supported);
   if (supported) {
     try {
       ///generate a new fragment metadata record for the data
