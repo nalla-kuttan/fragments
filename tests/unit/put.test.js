@@ -1,55 +1,78 @@
-const request = require('supertest');
-const app = require('../../src/app');
+const { createSuccessResponse, createErrorResponse } = require('../../src/response');
+const { Fragment } = require('../../src/model/fragment');
+const updateFragment = require('../../src/routes/api/put');
 
-describe('PUT /v1/fragments/:id', () => {
-  //test unauthenticated requests
-  test('unauthenticated requests are denied', () =>
-    request(app).delete('/v1/fragments/:id').expect(401));
+jest.mock('../../src/response');
+jest.mock('../../src/model/fragment');
+jest.mock('../../src/logger');
 
-  // Using a valid username/password pair with correct fragment id
-  test('authenticated user updates a fragment', async () => {
-    const postResponse = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/plain')
-      .send('A fragment');
-    var id = JSON.parse(postResponse.text).fragment.id;
-    const putResponse = await request(app)
-      .put(`/v1/fragments/${id}`)
-      .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/plain')
-      .send('Updated fragment');
-    expect(putResponse.statusCode).toBe(200);
+describe('PUT /fragments/:id', () => {
+  const req = {
+    params: {
+      id: 'test-id'
+    },
+    user: {
+      id: 'test-user-id'
+    },
+    get: jest.fn().mockReturnValue('application/json'),
+    body: {
+      fragment: 'updated fragment data'
+    }
+  };
+
+  const res = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn()
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  test('authenticated users updates an nonexisting fragment', async () => {
-    await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/plain')
-      .send('A fragment');
-    var id = 123;
-    const putResponse = await request(app)
-      .put(`/v1/fragments/${id}`)
-      .set('Content-Type', 'text/plain')
-      .auth('user1@email.com', 'password1')
-      .send('Updated fragment');
-    expect(putResponse.statusCode).toBe(404);
+  test('updates existing fragment with matching type', async () => {
+    const mockFragment = {
+      type: 'application/json',
+      setData: jest.fn(),
+    };
+    Fragment.byId.mockResolvedValue(mockFragment);
+
+    await updateFragment(req, res);
+
+    expect(Fragment.byId).toHaveBeenCalledWith(req.user, req.params.id);
+    expect(req.get).toHaveBeenCalledWith('Content-Type');
+    expect(mockFragment.setData).toHaveBeenCalledWith(req.body.fragment);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(
+      createSuccessResponse({
+        status: 'ok',
+        fragment: mockFragment,
+      })
+    );
   });
 
-  // Using a valid username/password pair with correct fragment id but incorrect type
-  test('authenticated users update a fragment', async () => {
-    const postResponse = await request(app)
-      .post('/v1/fragments')
-      .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/plain')
-      .send('A fragment');
-    var id = JSON.parse(postResponse.text).fragment.id;
-    const putResponse = await request(app)
-      .put(`/v1/fragments/${id}`)
-      .auth('user1@email.com', 'password1')
-      .set('Content-Type', 'text/html')
-      .send('<h1>Updated fragment</h1>');
-    expect(putResponse.statusCode).toBe(400);
+  test('returns 400 if request Content-Type does not match fragment type', async () => {
+    const mockFragment = {
+      type: 'application/xml',
+    };
+    Fragment.byId.mockResolvedValue(mockFragment);
+
+    await updateFragment(req, res);
+
+    expect(Fragment.byId).toHaveBeenCalledWith(req.user, req.params.id);
+    expect(req.get).toHaveBeenCalledWith('Content-Type');
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(
+      createErrorResponse(400, "The type does not match the fragment's saved type")
+    );
+  });
+
+  test('returns 404 if no fragment found with given id', async () => {
+    Fragment.byId.mockRejectedValue(new Error('Fragment not found'));
+
+    await updateFragment(req, res);
+
+    expect(Fragment.byId).toHaveBeenCalledWith(req.user, req.params.id);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith(createErrorResponse(404, 'Fragment not found'));
   });
 });

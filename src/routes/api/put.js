@@ -2,8 +2,8 @@
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 const { Fragment } = require('../../../src/model/fragment');
 const logger = require('../../logger');
-//Allows the authenticated user to update (i.e., replace) the data for their existing fragment with the specified id.
 
+//Allows the authenticated user to update (i.e., replace) the data for their existing fragment with the specified id.
 module.exports = async (req, res) => {
   var id = req.params.id;
   var user = req.user;
@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
     //If the Content-Type of the request does not match the existing fragment's type, returns an HTTP 400 with an appropriate error message. A fragment's type can not be changed after it is created.
     if (fragment.type === req.get('Content-Type')) {
       //The entire request body is used to update the fragment's data, replacing the original value.
-      await fragment.setData(req.body);
+      await fragment.setData(req.body.fragment);
       //The successful response includes an HTTP 200 as well as updated fragment metadata
       res.status(200).json(
         createSuccessResponse({
